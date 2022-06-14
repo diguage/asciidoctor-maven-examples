@@ -47,6 +47,9 @@ endif::[]
 :uri-ruby: https://ruby-lang.org
 // images:
 :image-uri-screenshot: screenshot.png
+:sectnumlevels: 4
+
+:sectnums:
 
 {uri-project}/[Asciidoctor] 是一个 _快速_ 文本处理器和发布工具链，它可以将 {uri-what-is-asciidoc}[AsciiDoc] 文档转化成 HTML5、 DocBook 5 (或 4.5) 以及其他格式。
 Asciidoctor 由 Ruby 编写，打包成 RubyGem，然后发布到 {uri-rubygem}[RubyGems.org] 上。
@@ -412,3 +415,253 @@ Copyright (C) 2012-2016 Dan Allen, Ryan Waldron and the Asciidoctor Project.
 == Changelog
 
 请看 {uri-changelog}[CHANGELOG]。
+
+[#other-example]
+== 其他示例
+
+[#quote-example]
+=== Quote Example
+
+[quote, Erich Gamma、Richard Helm、Ralph Johnson、John Vlissides,《设计模式》]
+____
+迭代器模式（Iterator）::
+提供一种方法顺序访问一个聚合对象中各个元素，而不是暴露该对象的内部表示。
+____
+
+类图如下：
+
+[plantuml,{diagram_attr}]
+....
+@startuml
+'skinparam nodesep 70
+skinparam titleFontSize 30
+skinparam defaultFontName Hiragino Sans GB
+
+title **迭代器模式**
+
+abstract class Iterator {
++ {abstract} first() :Object
++ {abstract} next() :Object
++ {abstract} isDone() :boolean
++ {abstract} currentItem() :Object
+}
+note top: 迭代抽象类，用于定义得到开始对象、\n得到下一个对象、判断是否到结尾、\n当前对象等抽象方法，统一接口。
+
+class ConcreteIterator {
+}
+note bottom: 具体迭代器类，继承 Iterator，\n实现开始、下一个、是否结尾、\n当前对象等方法。
+
+abstract class Aggregate {
++ {abstract} createIterator() :Iterator
+}
+note top: 聚集抽象类
+
+class ConcreteAggregate {
++ createIterator() :Iterator
+}
+note bottom: 具体聚集类，继承 Aggregate。
+
+class Client {
+}
+
+Client -left-> Aggregate
+Client -right-> Iterator
+
+Aggregate <|-- ConcreteAggregate
+Iterator <|-- ConcreteIterator
+
+ConcreteIterator -left-> ConcreteAggregate
+ConcreteIterator <.. ConcreteAggregate
+
+skinparam footerFontSize 20
+footer D瓜哥 · https://www.diguage.com · 出品
+
+@enduml
+....
+
+[#sidebar-example]
+=== Sidebar Example
+
+.Optional Title
+****
+Sidebars are used to visually separate auxiliary bits of content
+that supplement the main text.
+
+TIP: They can contain any type of content.
+
+.Source code block in a sidebar
+[source,js]
+----
+const { expect, heredoc } = require('../test/test-utils')
+----
+****
+
+
+[#callout-example]
+=== Callout Example
+
+[source,ruby]
+----
+require 'sinatra' <1>
+
+get '/hi' do <2> <3>
+  "Hello World!"
+end
+----
+<1> Library import
+<2> URL mapping
+<3> Response block
+
+[#description-list-example]
+=== Description List Example
+
+这是一段测试内容。只是查看上下间距等。这是一段测试内容。只是查看上下间距等。这是一段测试内容。只是查看上下间距等。这是一段测试内容。只是查看上下间距等。
+
+CPU:: The brain of the computer.
+Hard drive:: Permanent storage for operating system and/or user files.
+RAM:: Temporarily stores information the CPU uses during operation.
+
+Operating Systems::
+Linux:::
+. Fedora
+* Desktop
+. Ubuntu
+* Desktop
+* Server
+BSD:::
+. FreeBSD
+. NetBSD
+
+Cloud Providers::
+PaaS:::
+. OpenShift
+. CloudBees
+IaaS:::
+. Amazon EC2
+. Rackspace
+
+[#example-blocks-example]
+=== Example Blocks Example
+
+这是一段测试内容。只是查看上下间距等。
+
+==== Example 1
+
+这是一段测试内容。只是查看上下间距等。这是一段测试内容。只是查看上下间距等。这是一段测试内容。只是查看上下间距等。这是一段测试内容。只是查看上下间距等。这是一段测试内容。只是查看上下间距等。
+
+.Optional title
+[example]
+This is an example of an example block.
+
+这是一段测试内容。只是查看上下间距等。这是一段测试内容。只是查看上下间距等。这是一段测试内容。只是查看上下间距等。这是一段测试内容。只是查看上下间距等。这是一段测试内容。只是查看上下间距等。
+
+==== Example 2
+
+这是一段测试内容。只是查看上下间距等。
+
+.Onomatopoeia
+====
+The book hit the floor with a *thud*.
+
+He could hear doves *cooing* in the pine trees`' branches.
+====
+
+这是一段测试内容。只是查看上下间距等。
+
+
+[#footnotes-example]
+=== Footnotes Example
+
+这是一段测试内容。只是查看上下间距等。
+
+==== Footnotes 1
+
+The hail-and-rainbow protocol can be initiated at five levels:
+
+. doublefootnote:[The double hail-and-rainbow level makes my toes tingle.]
+. tertiary
+. supernumerary
+. supermassive
+. apocalyptic
+
+A bold statement!footnote:disclaimer[Opinions are my own.]
+
+Another outrageous statement.footnote:disclaimer[]
+
+==== Footnotes 2
+
+下面是另外一种 Footnote：
+
+:fn-hail-and-rainbow: footnote:[The double hail-and-rainbow level makes my toes tingle.]
+:fn-disclaimer: footnote:disclaimer[Opinions are my own.]
+
+The hail-and-rainbow protocol can be initiated at five levels:
+
+. double{fn-hail-and-rainbow}
+. tertiary
+. supernumerary
+. supermassive
+. apocalyptic
+
+A bold statement!{fn-disclaimer}
+
+Another outrageous statement.{fn-disclaimer}
+
+从这里可以看出 Footnote 还可以自动合并同类项。
+
+[#verses-example]
+=== Verses Example
+
+这是一段测试内容。只是查看上下间距等。
+
+==== Verses 1
+
+这是一段测试内容。只是查看上下间距等。
+
+[verse, Carl Sandburg, two lines from the poem Fog]
+The fog comes
+on little cat feet.
+
+这是一段测试内容。只是查看上下间距等。
+
+==== Verses 2
+
+这是一段测试内容。只是查看上下间距等。
+
+[verse, Carl Sandburg, Fog]
+____
+The fog comes
+on little cat feet.
+
+It sits looking
+over harbor and city
+on silent haunches
+and then moves on.
+____
+
+这是一段测试内容。只是查看上下间距等。
+
+[#table-example]
+=== Table Example
+
+.这是一个表格实例
+[cols="1,2a"]
+|===
+| Col 1 | Col 2
+
+| Cell 1.1
+| Cell 1.2
+
+| Cell 2.1
+| Cell 2.2
+
+[cols="2,1"]
+!===
+! Col1 ! Col2
+
+! C11
+! C12
+
+!===
+
+|===
